@@ -3,6 +3,11 @@
     "name": "Helium New Tab",
     "version": "1.0.0",
     "description": "A minimalist new tab page with search, !bangs, and quick-access tabs.",
+    "icons": {
+        "16": "assets/icons/icon-16.png",
+        "48": "assets/icons/icon-48.png",
+        "128": "assets/icons/icon-128.png"
+    },
     "chrome_url_overrides": {
         "newtab": "index.html"
     },
