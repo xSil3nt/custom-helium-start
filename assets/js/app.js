@@ -415,11 +415,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.handleGoogleSuggestions = (data) => {
-        searchIcon.classList.remove('loading');
-        const script = document.getElementById('google-suggest-script');
-        if (script) script.remove();
-        if (data && data[0] === state.lastQuery && data[1]) renderSuggestions(data[1].slice(0, 6));
+    const fetchSuggestions = async (query) => {
+        try {
+            const res = await fetch(
+                `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`
+            );
+            const data = await res.json();
+            searchIcon.classList.remove('loading');
+            if (data && data[0] === state.lastQuery && data[1]) renderSuggestions(data[1].slice(0, 6));
+        } catch {
+            searchIcon.classList.remove('loading');
+        }
     };
 
     searchInput.addEventListener('input', (e) => {
@@ -461,18 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         searchIcon.classList.add('loading');
-        state.debounceTimer = setTimeout(() => {
-            const oldScript = document.getElementById('google-suggest-script');
-            if (oldScript) oldScript.remove();
-            const script = document.createElement('script');
-            script.id = 'google-suggest-script';
-            script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}&callback=handleGoogleSuggestions`;
-            script.onerror = () => {
-                searchIcon.classList.remove('loading');
-                script.remove();
-            };
-            document.body.appendChild(script);
-        }, 150);
+        state.debounceTimer = setTimeout(() => fetchSuggestions(query), 150);
     });
 
     searchInput.addEventListener('keydown', (e) => {

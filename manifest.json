@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Helium New Tab",
+    "version": "1.0.0",
+    "description": "A minimalist new tab page with search, !bangs, and quick-access tabs.",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "content_security_policy": {
+        "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://suggestqueries.google.com; child-src 'none'; object-src 'none';"
+    }
+}
